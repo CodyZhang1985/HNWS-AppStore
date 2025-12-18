@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { StorageService } from '../services/storageService';
 import { ServiceProduct, FeaturedContent } from '../types';
+import { formatServicePrice } from '../constants';
 import AdminServiceForm from './AdminServiceForm';
 import AdminFeaturedForm from './AdminFeaturedForm';
 
@@ -125,7 +126,7 @@ const AdminView: React.FC = () => {
                           <span className="text-[10px] text-apple-gray uppercase tracking-wider font-semibold">{s.author || '中海科技'}</span>
                         </td>
                         <td className="px-6 py-4 text-xs font-medium">{s.category}</td>
-                        <td className="px-6 py-4 text-xs text-apple-gray">{s.pricingModel} {s.price && s.price !== '0' && `(￥${s.price})`}</td>
+                        <td className="px-6 py-4 text-xs text-apple-gray">{formatServicePrice(s.pricingModel, s.price)}</td>
                         <td className="px-6 py-4">
                            <button 
                             onClick={() => { const updated = services.map(x => x.id === s.id ? {...x, isPublished: !x.isPublished} : x); StorageService.saveServices(updated); setServices(updated); }} 

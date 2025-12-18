@@ -38,3 +38,29 @@ export const getTagColor = (name: string) => {
   const tag = FEATURE_TAGS.find(t => t.name === name);
   return tag || { color: '#86868b', bg: '#f5f5f7' };
 };
+
+/**
+ * 标准化价格显示格式
+ */
+export const formatServicePrice = (model: string, price: string) => {
+  if (model === '免费') return '免费';
+  if (model === '议价' || model === '服务中购买') return '面议';
+  if (model === '广告合作') return '合作分润';
+  
+  // 提取数字部分
+  const numericPart = price.match(/[\d.]+/)?.[0];
+  
+  if (!numericPart || numericPart === '0') {
+    if (model === '买断式' || model === '订阅式') return '面议';
+    return price || model;
+  }
+
+  if (model === '订阅式') {
+    return `${numericPart}元/月`;
+  }
+  if (model === '买断式') {
+    return `${numericPart}元`;
+  }
+  
+  return price || model;
+};
